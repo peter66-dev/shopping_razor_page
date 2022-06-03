@@ -53,12 +53,12 @@
                 @Html.DisplayFor(modelItem => item.ShipAddress)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Customer.CustomerID)
+                @Html.DisplayFor(modelItem => item.Customer.CustomerId)
             </td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.OrderID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.OrderID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.OrderID">Delete</a>
+                <a asp-page="./Edit" asp-route-id="@item.OrderId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.OrderId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.OrderId">Delete</a>
             </td>
         </tr>
 }

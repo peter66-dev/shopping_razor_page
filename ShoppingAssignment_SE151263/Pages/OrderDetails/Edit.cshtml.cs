@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ShoppingAssignment_SE151263.Models;
+using ShoppingAssignment_SE151263.DataAccess;
 
 namespace ShoppingAssignment_SE151263.Pages.OrderDetails
 {
     public class EditModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.Models.ShoppingContext _context;
+        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
 
-        public EditModel(ShoppingAssignment_SE151263.Models.ShoppingContext context)
+        public EditModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
         {
             _context = context;
         }
@@ -31,14 +31,14 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
 
             OrderDetail = await _context.OrderDetails
                 .Include(o => o.Order)
-                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderID == id);
+                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderId == id);
 
             if (OrderDetail == null)
             {
                 return NotFound();
             }
-           ViewData["OrderID"] = new SelectList(_context.Orders, "OrderID", "OrderID");
-           ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID");
+           ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId");
+           ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductName");
             return Page();
         }
 
@@ -59,7 +59,7 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderDetailExists(OrderDetail.OrderID))
+                if (!OrderDetailExists(OrderDetail.OrderId))
                 {
                     return NotFound();
                 }
@@ -74,7 +74,7 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
 
         private bool OrderDetailExists(string id)
         {
-            return _context.OrderDetails.Any(e => e.OrderID == id);
+            return _context.OrderDetails.Any(e => e.OrderId == id);
         }
     }
 }

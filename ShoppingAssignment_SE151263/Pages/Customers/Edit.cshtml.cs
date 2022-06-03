@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ShoppingAssignment_SE151263.Models;
+using ShoppingAssignment_SE151263.DataAccess;
 
 namespace ShoppingAssignment_SE151263.Pages.Customers
 {
     public class EditModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.Models.ShoppingContext _context;
+        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
 
-        public EditModel(ShoppingAssignment_SE151263.Models.ShoppingContext context)
+        public EditModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
                 return NotFound();
             }
 
-            Customer = await _context.Customers.FirstOrDefaultAsync(m => m.CustomerID == id);
+            Customer = await _context.Customers.FirstOrDefaultAsync(m => m.CustomerId == id);
 
             if (Customer == null)
             {
@@ -55,7 +55,7 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CustomerExists(Customer.CustomerID))
+                if (!CustomerExists(Customer.CustomerId))
                 {
                     return NotFound();
                 }
@@ -70,7 +70,7 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
 
         private bool CustomerExists(string id)
         {
-            return _context.Customers.Any(e => e.CustomerID == id);
+            return _context.Customers.Any(e => e.CustomerId == id);
         }
     }
 }

@@ -1,0 +1,48 @@
+﻿@page
+@model ShoppingAssignment_SE151263.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login Page";
+
+}
+
+
+<div class="text-center text-info text-capitalize">
+    <h1 class="display-4">Welcome to eStore!</h1>
+</div>
+@{
+    if (@ViewData["LoginMessage"] != null)
+    {
+        <h3 class="text-center text-danger">@ViewData["LoginMessage"]</h3>
+    }
+}
+<br />
+<div class="d-flex justify-content-center">
+    <form method="post">
+        <div class="mb-3 row">
+            <div class="col-sm-3">
+                <label class="col-form-label" asp-for="@Model.EmailLogin">Email</label>
+            </div>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" asp-for="@Model.EmailLogin" />
+            </div>
+            <span class="text-danger" asp-validation-for="@Model.EmailLogin" />
+        </div>
+        <div class="mb-3 row">
+            <div class="col-sm-3">
+                <label class="col-form-label" asp-for="@Model.PasswordLogin">Password</label>
+            </div>
+            <div class="col-sm-9">
+                <input type="password" class="form-control" asp-for="@Model.PasswordLogin">
+            </div>
+            <span class="text-danger" asp-validation-for="@Model.EmailLogin" />
+        </div>
+        <div class="mb-3 row">
+            <div class="col-sm-6">
+                <input type="submit" value="Login" class="btn btn-info" />
+            </div>
+            <div class="col-sm-6">
+                <input type="reset" value="Reset" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+</div>

@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ShoppingAssignment_SE151263.Models;
+using ShoppingAssignment_SE151263.DataAccess;
 
 namespace ShoppingAssignment_SE151263.Pages.Products
 {
     public class EditModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.Models.ShoppingContext _context;
+        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
 
-        public EditModel(ShoppingAssignment_SE151263.Models.ShoppingContext context)
+        public EditModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
         {
             _context = context;
         }
@@ -31,14 +31,14 @@ namespace ShoppingAssignment_SE151263.Pages.Products
 
             Product = await _context.Products
                 .Include(p => p.Category)
-                .Include(p => p.Supplier).FirstOrDefaultAsync(m => m.ProductID == id);
+                .Include(p => p.Supplier).FirstOrDefaultAsync(m => m.ProductId == id);
 
             if (Product == null)
             {
                 return NotFound();
             }
-           ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID");
-           ViewData["SupplierID"] = new SelectList(_context.Suppliers, "SupplierID", "SupplierID");
+           ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+           ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
             return Page();
         }
 
@@ -59,7 +59,7 @@ namespace ShoppingAssignment_SE151263.Pages.Products
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(Product.ProductID))
+                if (!ProductExists(Product.ProductId))
                 {
                     return NotFound();
                 }
@@ -74,7 +74,7 @@ namespace ShoppingAssignment_SE151263.Pages.Products
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.ProductID == id);
+            return _context.Products.Any(e => e.ProductId == id);
         }
     }
 }

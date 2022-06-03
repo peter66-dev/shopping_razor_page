@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ShoppingAssignment_SE151263.Models;
+using ShoppingAssignment_SE151263.DataAccess;
 
 namespace ShoppingAssignment_SE151263.Pages.Orders
 {
     public class EditModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.Models.ShoppingContext _context;
+        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
 
-        public EditModel(ShoppingAssignment_SE151263.Models.ShoppingContext context)
+        public EditModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
         {
             _context = context;
         }
@@ -30,13 +30,13 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
             }
 
             Order = await _context.Orders
-                .Include(o => o.Customer).FirstOrDefaultAsync(m => m.OrderID == id);
+                .Include(o => o.Customer).FirstOrDefaultAsync(m => m.OrderId == id);
 
             if (Order == null)
             {
                 return NotFound();
             }
-           ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID");
+           ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
             return Page();
         }
 
@@ -57,7 +57,7 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderExists(Order.OrderID))
+                if (!OrderExists(Order.OrderId))
                 {
                     return NotFound();
                 }
@@ -72,7 +72,7 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
 
         private bool OrderExists(string id)
         {
-            return _context.Orders.Any(e => e.OrderID == id);
+            return _context.Orders.Any(e => e.OrderId == id);
         }
     }
 }

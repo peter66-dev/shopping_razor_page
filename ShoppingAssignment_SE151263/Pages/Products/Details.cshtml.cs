@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ShoppingAssignment_SE151263.Models;
+using ShoppingAssignment_SE151263.DataAccess;
 
 namespace ShoppingAssignment_SE151263.Pages.Products
 {
     public class DetailsModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.Models.ShoppingContext _context;
+        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
 
-        public DetailsModel(ShoppingAssignment_SE151263.Models.ShoppingContext context)
+        public DetailsModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace ShoppingAssignment_SE151263.Pages.Products
 
             Product = await _context.Products
                 .Include(p => p.Category)
-                .Include(p => p.Supplier).FirstOrDefaultAsync(m => m.ProductID == id);
+                .Include(p => p.Supplier).FirstOrDefaultAsync(m => m.ProductId == id);
 
             if (Product == null)
             {

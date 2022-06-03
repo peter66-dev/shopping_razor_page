@@ -19,7 +19,7 @@ namespace ShoppingAssignment_SE151263.Pages
 
         public void OnGet()
         {
-
+            
         }
     }
 }

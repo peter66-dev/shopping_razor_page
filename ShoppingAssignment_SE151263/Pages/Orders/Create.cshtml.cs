@@ -5,22 +5,22 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ShoppingAssignment_SE151263.Models;
+using ShoppingAssignment_SE151263.DataAccess;
 
 namespace ShoppingAssignment_SE151263.Pages.Orders
 {
     public class CreateModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.Models.ShoppingContext _context;
+        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
 
-        public CreateModel(ShoppingAssignment_SE151263.Models.ShoppingContext context)
+        public CreateModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID");
+        ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
             return Page();
         }
 

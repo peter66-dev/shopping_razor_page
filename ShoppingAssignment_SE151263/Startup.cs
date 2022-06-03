@@ -1,15 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ShoppingAssignment_SE151263.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using ShoppingAssignment_SE151263.DataAccess;
+using ShoppingAssignment_SE151263.Repository;
 
 namespace ShoppingAssignment_SE151263
 {
@@ -26,9 +23,12 @@ namespace ShoppingAssignment_SE151263
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddDbContext<ShoppingContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ShoppingContext")));
+            services.AddDbContext<NorthwindCopyDBContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddSession();
+            services.AddMvc();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
