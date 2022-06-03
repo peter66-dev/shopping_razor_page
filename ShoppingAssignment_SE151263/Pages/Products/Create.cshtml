@@ -1,0 +1,62 @@
+﻿@page
+@model ShoppingAssignment_SE151263.Pages.Products.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Product.ProductName" class="control-label"></label>
+                <input asp-for="Product.ProductName" class="form-control" />
+                <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.SupplierID" class="control-label"></label>
+                <select asp-for="Product.SupplierID" class ="form-control" asp-items="ViewBag.SupplierID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.CategoryID" class="control-label"></label>
+                <select asp-for="Product.CategoryID" class ="form-control" asp-items="ViewBag.CategoryID"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.QuantityPerUnit" class="control-label"></label>
+                <input asp-for="Product.QuantityPerUnit" class="form-control" />
+                <span asp-validation-for="Product.QuantityPerUnit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.UnitPrice" class="control-label"></label>
+                <input asp-for="Product.UnitPrice" class="form-control" />
+                <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ProductImage" class="control-label"></label>
+                <input asp-for="Product.ProductImage" class="form-control" />
+                <span asp-validation-for="Product.ProductImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Product.ProductStatus" class="control-label"></label>
+                <input asp-for="Product.ProductStatus" class="form-control" />
+                <span asp-validation-for="Product.ProductStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
