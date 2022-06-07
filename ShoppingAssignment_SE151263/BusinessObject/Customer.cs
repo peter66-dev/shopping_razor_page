@@ -11,7 +11,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
         [Display(Name ="ID")]
         public string CustomerId { get; set; }
 
-        [DataType(DataType.Password)]
+        //[DataType(DataType.Password)]
         [Required(ErrorMessage = "Password phải từ 1-20 kí tự!")]
         [MaxLength(20), MinLength(1)]
         public string Password { get; set; }

@@ -1,8 +1,11 @@
-﻿@page
+﻿@page "/customer/index"
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
 @model ShoppingAssignment_SE151263.Pages.Customers.IndexModel
 
 @{
     ViewData["Title"] = "Customer list";
+    
 }
 
 <div class="text-right">
@@ -75,10 +78,10 @@
                 <td class="text-center">
                     <a asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a>
                     |
-                    <a asp-page = "./Details" asp-route-id = "@item.CustomerId" > Details </a> |
-                    <a asp-page = "./Delete" asp-route-id = "@item.CustomerId" > Delete </a>
-                    </td>
-                    </tr>
+                    <a asp-page="./Details" asp-route-id="@item.CustomerId"> Details </a> |
+                    <a asp-page="./Delete" asp-route-id="@item.CustomerId"> Delete </a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

@@ -27,7 +27,7 @@ namespace ShoppingAssignment_SE151263.Pages.CustomerDetail
             if (customerID == null)
             {
                 ViewData["LoginMessage"] = "Bạn phải login trước khi xem thông tin cá nhân!";
-                return new RedirectToPageResult("./Login"); // chưa trả về trang login được!
+                return Redirect("./Index"); // chưa trả về trang login được!
             }
             else
             {

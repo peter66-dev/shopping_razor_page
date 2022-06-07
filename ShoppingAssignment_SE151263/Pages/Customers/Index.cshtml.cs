@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ShoppingAssignment_SE151263.DataAccess;
@@ -27,15 +29,27 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
 
         public PaginatedList<Customer> Customers { get; set; }
 
+        public IActionResult Index()
+        {
+            if (HttpContext.Session.GetString("EmailAdmin") == null)
+            {
+                ViewData["LoginMessage"] = "Bạn không có quyền truy cập vào trang này!";
+                Console.WriteLine("Chưa đăng nhập!");
+                return Redirect("./Login");
+            }
+            Console.WriteLine("Đã đăng nhập!");
+            return Page();
+        }
 
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
             //Customer = await _context.Customers.ToListAsync();
+
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             EmailSort = String.IsNullOrEmpty(sortOrder) ? "email_desc" : "";
 
-            if(searchString != null)
+            if (searchString != null)
             {
                 pageIndex = 1;
             }
@@ -67,7 +81,7 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             {
                 customersIQ = customersIQ.OrderByDescending(c => c.Email);
             }
-            
+
 
             var pageSize = configuration.GetValue("PageSize", 4);
             Customers = await PaginatedList<Customer>.CreateAsync(

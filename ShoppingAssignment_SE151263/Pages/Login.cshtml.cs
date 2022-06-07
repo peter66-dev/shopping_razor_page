@@ -17,8 +17,6 @@ namespace ShoppingAssignment_SE151263.Pages
         [BindProperty]
         public Account Account { get; set; }
 
-        List<Customer> Customers { get; set; }
-
         NorthwindCopyDBContext context;
 
 
@@ -27,9 +25,11 @@ namespace ShoppingAssignment_SE151263.Pages
             context = c;
         }
 
-        public void OnGet()
+        public IActionResult OnGetLogout()
         {
             HttpContext.Session.Clear();
+            Console.WriteLine("[System message]: Logout!");
+            return Page();
         }
 
         public IActionResult OnPost()
@@ -41,7 +41,7 @@ namespace ShoppingAssignment_SE151263.Pages
             {
                 Console.WriteLine("Toi la admin!");
                 HttpContext.Session.SetString("EmailAdmin", admin.Email);
-                return new RedirectToPageResult("./Index");
+                return new RedirectResult("./Customer/Index");
             }
             else
             {

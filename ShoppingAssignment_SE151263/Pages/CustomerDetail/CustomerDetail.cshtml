@@ -4,7 +4,6 @@
 @{
     ViewData["Title"] = "Customer information";
 }
-
 <h3 class="text-center text-info">CUSTOMER INFORMATION</h3>
 
 <hr />
@@ -46,7 +45,7 @@
 </div>
 
 <div>
-    <a asp-page="./Login">Log out</a>
+    <a asp-page-handler="Logout" asp-page="/Login">Log out</a>
 </div>
 
 @section Scripts {
