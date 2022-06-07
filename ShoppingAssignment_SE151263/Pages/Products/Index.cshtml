@@ -2,71 +2,126 @@
 @model ShoppingAssignment_SE151263.Pages.Products.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Product list";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<div class="text-right">
+    <a class="btn btn-info" asp-page="Create">Create New</a>
+</div>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" name="Search" value="Search" class="btn btn-primary" />
+            <a asp-page="./Index">Back to list</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
-    <thead>
+    <thead class="text-center">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].ProductName)
+                @Html.DisplayNameFor(m => m.Products[0].ProductId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].QuantityPerUnit)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Products[0].ProductName)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].UnitPrice)
+                @Html.DisplayNameFor(m => m.Products[0].Supplier.CompanyName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].ProductImage)
+                @Html.DisplayNameFor(m => m.Products[0].Category.CategoryName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].ProductStatus)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.QuantitySort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Products[0].QuantityPerUnit)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].Category)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.PriceSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Products[0].UnitPrice)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product[0].Supplier)
+                @Html.DisplayNameFor(m => m.Products[0].ProductImage)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(m => m.Products[0].ProductStatus)
+            </th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Product) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QuantityPerUnit)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ProductId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.ProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.SupplierId)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.ProductImage)
+                </td>
+                <td class="text-center">
+                    @{
+                        if (item.ProductStatus == 1)
+                        {
+                            <p>Available</p>
+                        }
+                        else
+                        {
+                            <p>Out of stock</p>
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ProductId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ProductId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.Products.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Products.HasNextPage ? "disabled" : "";
+}
+
+<div class="text-center">
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Products.PageIndex - 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @prevDisabled">Previous</a>
+
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Products.PageIndex + 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @nextDisabled">Next</a>
+</div>

@@ -2,41 +2,72 @@
 @model ShoppingAssignment_SE151263.Pages.Orders.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Order list";
 }
 
-<h1>Index</h1>
+<div class="text-right">
+    <a class="btn btn-info" asp-page="Create">Create New</a>
+</div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by customer id:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" name="Search" value="Search" class="btn btn-primary" />
+            <a asp-page="./Index">Back to list</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
-    <thead>
+    <thead class="text-center">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].OrderDate)
+                @Html.DisplayNameFor(m => m.Orders[0].OrderId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].RequiredDate)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.CustomerIDSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Orders[0].CustomerId)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].ShippedDate)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.OrderDateSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Orders[0].OrderDate)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].Freight)
+                @Html.DisplayNameFor(model => model.Orders[0].RequiredDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].ShipAddress)
+                @Html.DisplayNameFor(model => model.Orders[0].ShippedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order[0].Customer)
+                 <a asp-page="./Index" asp-route-sortOrder="@Model.FreightSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Orders[0].Freight)
+                </a>
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.Orders[0].ShipAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Orders[0].Customer)
+            </th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Order) {
+@foreach (var item in Model.Orders) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderDate)
             </td>
@@ -51,9 +82,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ShipAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Customer.CustomerId)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.OrderId">Edit</a> |

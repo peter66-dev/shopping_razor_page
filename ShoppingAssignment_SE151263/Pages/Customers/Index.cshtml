@@ -2,59 +2,102 @@
 @model ShoppingAssignment_SE151263.Pages.Customers.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Customer list";
 }
 
-<h1>Index</h1>
+<div class="text-right">
+    <a class="btn btn-info" asp-page="Create">Create New</a>
+</div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" name="Search" value="Search" class="btn btn-primary" />
+            <a asp-page="./Index">Back to list</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
-    <thead>
+    <thead class="text-center">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Customer[0].Password)
+                @Html.DisplayNameFor(m => m.Customers[0].CustomerId)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer[0].ContactName)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Customers[0].ContactName)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer[0].Address)
+                <a asp-page="./Index" asp-route-sortOrder="@Model.EmailSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Customers[0].Email)
+                </a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer[0].Phone)
+                @Html.DisplayNameFor(m => m.Customers[0].Password)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Customer[0].Email)
+                @Html.DisplayNameFor(m => m.Customers[0].Address)
             </th>
-            <th></th>
+            <th>
+                @Html.DisplayNameFor(m => m.Customers[0].Phone)
+            </th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Customer) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContactName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.CustomerId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.CustomerId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Customers)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContactName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td class="text-center">
+                    <a asp-page="./Edit" asp-route-id="@item.CustomerId">Edit</a>
+                    |
+                    <a asp-page = "./Details" asp-route-id = "@item.CustomerId" > Details </a> |
+                    <a asp-page = "./Delete" asp-route-id = "@item.CustomerId" > Delete </a>
+                    </td>
+                    </tr>
+        }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.Customers.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Customers.HasNextPage ? "disabled" : "";
+}
+
+<div class="text-center">
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Customers.PageIndex - 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @prevDisabled">Previous</a>
+
+    <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Customers.PageIndex + 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @nextDisabled">Next</a>
+</div>

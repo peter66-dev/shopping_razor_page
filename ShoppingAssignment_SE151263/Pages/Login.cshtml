@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/login"
 @model ShoppingAssignment_SE151263.Pages.LoginModel
 @{
     ViewData["Title"] = "Login Page";
@@ -20,21 +20,21 @@
     <form method="post">
         <div class="mb-3 row">
             <div class="col-sm-3">
-                <label class="col-form-label" asp-for="@Model.EmailLogin">Email</label>
+                <label class="col-form-label" asp-for="@Model.Account.Email">Email</label>
             </div>
             <div class="col-sm-9">
-                <input type="text" class="form-control" asp-for="@Model.EmailLogin" />
+                <input type="text" class="form-control" asp-for="@Model.Account.Email" />
             </div>
-            <span class="text-danger" asp-validation-for="@Model.EmailLogin" />
+            <span class="text-danger" asp-validation-for="@Model.Account.Email" />
         </div>
         <div class="mb-3 row">
             <div class="col-sm-3">
-                <label class="col-form-label" asp-for="@Model.PasswordLogin">Password</label>
+                <label class="col-form-label" asp-for="@Model.Account.Password">Password</label>
             </div>
             <div class="col-sm-9">
-                <input type="password" class="form-control" asp-for="@Model.PasswordLogin">
+                <input type="password" class="form-control" asp-for="@Model.Account.Password">
             </div>
-            <span class="text-danger" asp-validation-for="@Model.EmailLogin" />
+            <span class="text-danger" asp-validation-for="@Model.Account.Password" />
         </div>
         <div class="mb-3 row">
             <div class="col-sm-6">

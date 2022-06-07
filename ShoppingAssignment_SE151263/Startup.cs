@@ -52,11 +52,12 @@ namespace ShoppingAssignment_SE151263
 
             app.UseAuthorization();
 
+            app.UseSession();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
             });
-            app.UseSession();
         }
     }
 }

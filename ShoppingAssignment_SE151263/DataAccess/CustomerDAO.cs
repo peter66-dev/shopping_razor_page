@@ -1,9 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ShoppingAssignment_SE151263.BusinessObject;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
 
 namespace ShoppingAssignment_SE151263.DataAccess
 {
@@ -25,30 +21,6 @@ namespace ShoppingAssignment_SE151263.DataAccess
                     return instance;
                 }
             }
-        }
-        public string CheckLogin(string email, string password)
-        {
-            string role = "undefined";
-            Account a = new Account();
-            try
-            {
-                string json = File.ReadAllText("appsettings.json");
-                a = JsonSerializer.Deserialize<Account>(json, null);
-                if (email.Equals(a.Email) && password.Equals(a.Password))
-                {
-                    role = "admin";
-                }
-                else
-                {
-
-                }
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-            return role;
         }
 
         public List<Customer> GetAllCustomer()

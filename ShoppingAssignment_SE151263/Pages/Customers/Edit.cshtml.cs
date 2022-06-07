@@ -30,7 +30,6 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             }
 
             Customer = await _context.Customers.FirstOrDefaultAsync(m => m.CustomerId == id);
-
             if (Customer == null)
             {
                 return NotFound();
