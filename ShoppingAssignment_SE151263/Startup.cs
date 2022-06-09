@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,11 +30,13 @@ namespace ShoppingAssignment_SE151263
             services.AddDbContext<NorthwindCopyDBContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
-            services
-            .AddMvc()
-            .AddRazorPagesOptions(options =>
+            services.AddMvc().AddRazorPagesOptions(options =>
             {
                 options.Conventions.AddPageRoute("/Login", "");
+            });
+            services.Configure<RouteOptions>(r =>
+            {
+                r.LowercaseUrls = true;
             });
             services.AddSession();
             services.AddTransient<ICustomerRepository, CustomerRepository>();

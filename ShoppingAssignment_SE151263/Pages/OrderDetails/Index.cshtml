@@ -1,54 +1,69 @@
 ﻿@page
+@using Microsoft.AspNetCore.Http
 @model ShoppingAssignment_SE151263.Pages.OrderDetails.IndexModel
 
 @{
     ViewData["Title"] = "Index";
+    Console.WriteLine("Toi la nguoi phan quyen!");
+    if (HttpContext.Session.GetString("EmailAdmin") == null)
+    {
+        Console.WriteLine("User chua login!");
+        <div class="text-center">
+            <a class="btn btn-danger" asp-page-handler="Logout" asp-page="/Login">Back to login</a>
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <h1 class="text-info">ORDER DETAIL LIST</h1>
+        </div>
+        <div class="text-right">
+            <a class="btn btn-info" asp-page="Create">Create new order detail</a>
+        </div>
+        <br/>
+        <table class="table">
+            <thead class="text-center">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDetail[0].Order.OrderId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDetail[0].Product)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDetail[0].UnitPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.OrderDetail[0].Quantity)
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderDetail)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Order.OrderId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Product.ProductName)
+                        </td>
+                        <td class="text-right">
+                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td class="text-center">
+                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead class="text-center">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDetail[0].Order.OrderId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDetail[0].Product)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDetail[0].UnitPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDetail[0].Quantity)
-            </th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.OrderDetail) {
-        <tr>
-            <td class="text-center">
-                @Html.DisplayFor(modelItem => item.Order.OrderId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.ProductName)
-            </td>
-            <td class="text-right">
-                @Html.DisplayFor(modelItem => item.UnitPrice)
-            </td>
-            <td  class="text-center">
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td  class="text-center">
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>

@@ -29,26 +29,13 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
 
         public PaginatedList<Customer> Customers { get; set; }
 
-        public IActionResult Index()
-        {
-            if (HttpContext.Session.GetString("EmailAdmin") == null)
-            {
-                ViewData["LoginMessage"] = "Bạn không có quyền truy cập vào trang này!";
-                Console.WriteLine("Chưa đăng nhập!");
-                return Redirect("./Login");
-            }
-            Console.WriteLine("Đã đăng nhập!");
-            return Page();
-        }
-
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
             //Customer = await _context.Customers.ToListAsync();
-
+            Console.WriteLine("Toi la OnGetAsync method!");
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             EmailSort = String.IsNullOrEmpty(sortOrder) ? "email_desc" : "";
-
             if (searchString != null)
             {
                 pageIndex = 1;

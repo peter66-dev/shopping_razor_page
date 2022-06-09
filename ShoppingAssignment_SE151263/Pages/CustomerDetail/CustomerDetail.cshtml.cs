@@ -24,12 +24,7 @@ namespace ShoppingAssignment_SE151263.Pages.CustomerDetail
         public IActionResult OnGet()
         {
             string customerID = HttpContext.Session.GetString("customerID");
-            if (customerID == null)
-            {
-                ViewData["LoginMessage"] = "Bạn phải login trước khi xem thông tin cá nhân!";
-                return Redirect("./Index"); // chưa trả về trang login được!
-            }
-            else
+            if (customerID != null)
             {
                 Customer = context.Customers.SingleOrDefault(c => c.CustomerId.Equals(customerID));
                 System.Console.WriteLine("Customer name: " + Customer.ContactName);
@@ -62,7 +57,7 @@ namespace ShoppingAssignment_SE151263.Pages.CustomerDetail
                 }
             }
 
-            return RedirectToPage("./Index");
+            return RedirectToPage("../Login");
         }
 
         private bool CustomerExists(string id)

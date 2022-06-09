@@ -1,127 +1,141 @@
 ﻿@page
+@using Microsoft.AspNetCore.Http
 @model ShoppingAssignment_SE151263.Pages.Products.IndexModel
 
 @{
     ViewData["Title"] = "Product list";
-}
+    Console.WriteLine("Toi la nguoi phan quyen!");
+    if (HttpContext.Session.GetString("EmailAdmin") == null)
+    {
+        Console.WriteLine("User chua login!");
+        <div class="text-center">
+            <a class="btn btn-danger" asp-page-handler="Logout" asp-page="/Login">Back to login</a>
+        </div>
+    }
+    else
+    {
+         <div class="text-center">
+            <h1 class="text-info">PRODUCT LIST</h1>
+        </div>
+        <div class="text-right">
+            <a class="btn btn-info" asp-page="Create">Create new product</a>
+        </div>
+        <br/>
 
+        <form asp-page="./Index" method="get">
+            <div class="form-actions no-color">
+                <p>
+                    Find by name:
+                    <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+                    <input type="submit" name="Search" value="Search" class="btn btn-primary" />
+                    <a asp-page="./Index">Back to list</a>
+                </p>
+            </div>
+        </form>
 
-<div class="text-right">
-    <a class="btn btn-info" asp-page="Create">Create New</a>
-</div>
-
-<form asp-page="./Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Find by name:
-            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
-            <input type="submit" name="Search" value="Search" class="btn btn-primary" />
-            <a asp-page="./Index">Back to list</a>
-        </p>
-    </div>
-</form>
-
-<table class="table">
-    <thead class="text-center">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(m => m.Products[0].ProductId)
-            </th>
-            <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+        <table class="table">
+            <thead class="text-center">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Products[0].ProductId)
+                    </th>
+                    <th>
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
                    asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Products[0].ProductName)
-                </a>
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.Products[0].Supplier.CompanyName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.Products[0].Category.CategoryName)
-            </th>
-            <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.QuantitySort"
+                            @Html.DisplayNameFor(model => model.Products[0].ProductName)
+                        </a>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Products[0].Supplier.CompanyName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Products[0].Category.CategoryName)
+                    </th>
+                    <th>
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.QuantitySort"
                    asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Products[0].QuantityPerUnit)
-                </a>
-            </th>
-            <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.PriceSort"
+                            @Html.DisplayNameFor(model => model.Products[0].QuantityPerUnit)
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.PriceSort"
                    asp-route-currentFilter="@Model.CurrentFilter">
-                    @Html.DisplayNameFor(model => model.Products[0].UnitPrice)
-                </a>
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.Products[0].ProductImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(m => m.Products[0].ProductStatus)
-            </th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Products)
-        {
-            <tr>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.ProductId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.SupplierId)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.CategoryId)
-                </td>
-                <td class="text-center">
-                    @Html.DisplayFor(modelItem => item.QuantityPerUnit)
-                </td>
-                <td class="text-right">
-                    @Html.DisplayFor(modelItem => item.UnitPrice)
-                </td>
-                <td class="text-right">
-                    @Html.DisplayFor(modelItem => item.ProductImage)
-                </td>
-                <td class="text-center">
-                    @{
-                        if (item.ProductStatus == 1)
-                        {
-                            <p>Available</p>
-                        }
-                        else
-                        {
-                            <p>Out of stock</p>
-                        }
-                    }
-                </td>
-                <td>
-                    <a asp-page="./Edit" asp-route-id="@item.ProductId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.ProductId">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                            @Html.DisplayNameFor(model => model.Products[0].UnitPrice)
+                        </a>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Products[0].ProductImage)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Products[0].ProductStatus)
+                    </th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ProductId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductName)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.SupplierId)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.CategoryId)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.QuantityPerUnit)
+                        </td>
+                        <td class="text-right">
+                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                        </td>
+                        <td class="text-right">
+                            @Html.DisplayFor(modelItem => item.ProductImage)
+                        </td>
+                        <td class="text-center">
+                            @{
+                                if (item.ProductStatus == 1)
+                                {
+                                    <p>Available</p>
+                                }
+                                else
+                                {
+                                    <p>Out of stock</p>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a asp-page="./Edit" asp-route-id="@item.ProductId">Edit</a> |
+                            <a asp-page="./Details" asp-route-id="@item.ProductId">Details</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.ProductId">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-@{
-    var prevDisabled = !Model.Products.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.Products.HasNextPage ? "disabled" : "";
-}
+        var prevDisabled = !Model.Products.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Products.HasNextPage ? "disabled" : "";
 
-<div class="text-center">
-    <a asp-page="./Index"
+        <div class="text-center">
+            <a asp-page="./Index"
        asp-route-sortOrder="@Model.CurrentSort"
        asp-route-pageIndex="@(Model.Products.PageIndex - 1)"
        asp-route-currentFilter="@Model.CurrentFilter"
        class="btn btn-primary @prevDisabled">Previous</a>
 
-    <a asp-page="./Index"
+            <a asp-page="./Index"
        asp-route-sortOrder="@Model.CurrentSort"
        asp-route-pageIndex="@(Model.Products.PageIndex + 1)"
        asp-route-currentFilter="@Model.CurrentFilter"
        class="btn btn-primary @nextDisabled">Next</a>
-</div>
+        </div>
+    }
+}
+
+

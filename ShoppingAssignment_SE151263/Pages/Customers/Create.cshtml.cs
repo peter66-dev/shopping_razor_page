@@ -33,11 +33,17 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             {
                 return Page();
             }
-
-            _context.Customers.Add(Customer);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
+            try
+            {
+                _context.Customers.Add(Customer);
+                await _context.SaveChangesAsync();
+                return RedirectToPage("./Index");
+            }
+            catch (Exception ex)
+            {
+                ViewData["ErrorMessage"] = "Lỗi: " + ex.Message;
+                return RedirectToPage("./Privacy");
+            }
         }
     }
 }

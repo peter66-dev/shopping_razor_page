@@ -41,7 +41,7 @@ namespace ShoppingAssignment_SE151263.Pages
             {
                 Console.WriteLine("Toi la admin!");
                 HttpContext.Session.SetString("EmailAdmin", admin.Email);
-                return new RedirectResult("./Customer/Index");
+                return new RedirectResult("./Customers/Index");
             }
             else
             {
