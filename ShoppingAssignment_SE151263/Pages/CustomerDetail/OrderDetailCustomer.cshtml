@@ -1,0 +1,82 @@
+﻿@page
+@using Microsoft.AspNetCore.Http
+@model ShoppingAssignment_SE151263.Pages.CustomerDetail.OrderDetailCustomer
+@{
+    ViewData["Title"] = "Order detail";
+    Console.WriteLine("Toi la nguoi phan quyen OrderDetailCustomer!");
+    if (HttpContext.Session.GetString("customerID") == null)
+    {
+        Console.WriteLine("User chua login!");
+        <div class="text-center">
+            <a class="btn btn-danger" asp-page-handler="Logout" asp-page="/Login">Back to login</a>
+        </div>
+    }
+    else if (Model.OrderDetails.Count == 0)
+    {
+        <h3 class="text-center text-danger">Quý khách chưa mua gì ở cửa hàng chúng tôi cả!</h3>
+    }
+    else
+    {
+        <div class="text-center">
+            <h1 class="text-info">ORDER DETAIL HISTORY</h1>
+        </div>
+        <br />
+
+        <table class="table">
+            <thead class="text-center">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(m => m.OrderDetails[0].OrderId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.OrderDetails[0].ProductId)
+                    </th>
+                    <th>
+                       @Html.DisplayNameFor(m => m.OrderDetails[0].UnitPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.OrderDetails[0].Quantity)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OrderDetails)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.OrderId)
+                        </td>
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.ProductId)
+                        </td>
+                        <td class="text-right">
+                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                        </td>
+                        <td class="text-right">
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        var prevDisabled = !Model.OrderDetails.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.OrderDetails.HasNextPage ? "disabled" : "";
+
+        <div class="text-center">
+            <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.OrderDetails.PageIndex - 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @prevDisabled">Previous</a>
+
+            <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.OrderDetails.PageIndex + 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @nextDisabled">Next</a>
+        </div>
+
+    }
+}
+

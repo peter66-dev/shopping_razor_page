@@ -31,7 +31,6 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
 
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
-            //Customer = await _context.Customers.ToListAsync();
             Console.WriteLine("Toi la OnGetAsync method!");
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
