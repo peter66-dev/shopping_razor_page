@@ -147,7 +147,6 @@ E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignm
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\Razor\Pages\Orders\Details.cshtml.g.cs
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\Razor\Pages\Orders\Edit.cshtml.g.cs
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\Razor\Pages\Orders\Index.cshtml.g.cs
-E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\Razor\Pages\Privacy.cshtml.g.cs
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\Razor\Pages\Products\Create.cshtml.g.cs
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\Razor\Pages\Products\Delete.cshtml.g.cs
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\Razor\Pages\Products\Details.cshtml.g.cs

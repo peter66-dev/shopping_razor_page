@@ -15,7 +15,7 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
         private readonly NorthwindCopyDBContext _context;
 
         private readonly IConfiguration configuration;
-        public IndexModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context, IConfiguration con)
+        public IndexModel(NorthwindCopyDBContext context, IConfiguration con)
         {
             _context = context;
             configuration = con;
@@ -28,6 +28,13 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
         public string FreightSort { get; set; }
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
+
+        [BindProperty]
+        public DateTime StartDate { get; set; }
+
+        [BindProperty]
+        public DateTime EndDate { get; set; }
+
 
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
@@ -81,6 +88,30 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
             var pageSize = configuration.GetValue("PageSize", 4);
             Orders = await PaginatedList<Order>.CreateAsync(
                 ordersIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+            if (Orders.Count != 0)
+            {
+                double total = 0;
+                foreach (var o in Orders)
+                {
+                    total += (double)o.Freight.Value;
+                    List<OrderDetail> list = _context.OrderDetails.Where(ord => ord.OrderId.Equals(o.OrderId)).ToList();
+                    if (list.Count != 0)
+                    {
+                        foreach (var od in list)
+                        {
+                            total += (double)(od.Quantity * od.UnitPrice);
+                        }
+                    }
+                }
+                ViewData["total"] = Math.Round(total, 2);
+            }
+        }
+
+        public IActionResult OnGetStatistic()
+        {
+            Console.WriteLine("Start date: " + StartDate);
+            Console.WriteLine("End date: " + EndDate);
+            return Page();
         }
     }
 }

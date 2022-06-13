@@ -18,9 +18,9 @@
             <h1 class="text-info">ORDER LIST</h1>
         </div>
         <div class="text-right">
-            <a class="btn btn-info" asp-page="Create">Create new order</a>
+            <a class="btn btn-info" asp-page="Create">Create a new order</a>
         </div>
-        <br/>
+        <br />
 
         <form asp-page="./Index" method="get">
             <div class="form-actions no-color">
@@ -33,6 +33,22 @@
             </div>
         </form>
 
+        //statistic - bug here
+        <form asp-area="Orders" asp-page="/Index" method="get" asp-page-handler="Statistic">
+            <div class="form-actions no-color">
+                <p>
+                    <input type="date" asp-for="@Model.StartDate" />
+                    <input type="date" asp-for="@Model.EndDate" />
+                    <input type="submit" name="Stastic" value="Stastic" class="btn btn-info" />
+                </p>
+            </div>
+        </form>
+
+        if (Model.Orders.Count != 0)
+        {
+            <p>Total: @ViewData["total"] VNĐ</p>
+        }
+
         <table class="table">
             <thead class="text-center">
                 <tr>
@@ -41,13 +57,19 @@
                     </th>
                     <th>
                         <a asp-page="./Index" asp-route-sortOrder="@Model.CustomerIDSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
+                        asp-route-currentFilter="@Model.CurrentFilter">
                             @Html.DisplayNameFor(model => model.Orders[0].CustomerId)
                         </a>
                     </th>
                     <th>
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.FreightSort"
+                        asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.Orders[0].Freight)
+                        </a>
+                    </th>
+                    <th>
                         <a asp-page="./Index" asp-route-sortOrder="@Model.OrderDateSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
+                        asp-route-currentFilter="@Model.CurrentFilter">
                             @Html.DisplayNameFor(model => model.Orders[0].OrderDate)
                         </a>
                     </th>
@@ -58,16 +80,7 @@
                         @Html.DisplayNameFor(model => model.Orders[0].ShippedDate)
                     </th>
                     <th>
-                        <a asp-page="./Index" asp-route-sortOrder="@Model.FreightSort"
-                   asp-route-currentFilter="@Model.CurrentFilter">
-                            @Html.DisplayNameFor(model => model.Orders[0].Freight)
-                        </a>
-                    </th>
-                    <th>
                         @Html.DisplayNameFor(model => model.Orders[0].ShipAddress)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Orders[0].Customer)
                     </th>
                     <th>Action</th>
                 </tr>
@@ -83,6 +96,9 @@
                             @Html.DisplayFor(modelItem => item.CustomerId)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Freight)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.OrderDate)
                         </td>
                         <td>
@@ -90,9 +106,6 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ShippedDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Freight)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ShipAddress)
@@ -106,6 +119,23 @@
                 }
             </tbody>
         </table>
+
+        var prevDisabled = !Model.Orders.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.Orders.HasNextPage ? "disabled" : "";
+
+        <div class="text-center">
+            <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Orders.PageIndex - 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @prevDisabled">Previous</a>
+
+            <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.Orders.PageIndex + 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @nextDisabled">Next</a>
+        </div>
     }
 }
 

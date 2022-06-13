@@ -18,8 +18,13 @@
         <div class="text-center">
             <h1 class="text-info">CUSTOMER LIST</h1>
         </div>
+        if (@ViewData["IndexMessage"] != null)
+        {
+            <h3 class="text-center text-primary">@ViewData["IndexMessage"]</h3>
+        }
+        <hr />
         <div class="text-right">
-            <a class="btn btn-info" asp-page="Create">Create New customer</a>
+            <a class="btn btn-info" asp-page="Create">Create a new customer</a>
         </div>
         <br />
 
@@ -42,7 +47,7 @@
                     </th>
                     <th>
                         <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
-                        asp-route-currentFilter="@Model.CurrentFilter">
+                   asp-route-currentFilter="@Model.CurrentFilter">
                             @Html.DisplayNameFor(model => model.Customers[0].ContactName)
                         </a>
                     </th>

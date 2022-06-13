@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ShoppingAssignment_SE151263.DataAccess
 {
@@ -8,6 +9,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
         private static CustomerDAO instance = null;
         private static readonly object instanceLock = new object();
         private CustomerDAO() { }
+
         public static CustomerDAO Instance
         {
             get
@@ -23,19 +25,75 @@ namespace ShoppingAssignment_SE151263.DataAccess
             }
         }
 
-        public List<Customer> GetAllCustomer()
+
+        public bool CheckIDExist(string id)
         {
-            List<Customer> list = null;
+            bool check = false;
             try
             {
                 var context = new NorthwindCopyDBContext();
-                //list = context.Customers.ToList();
+                List<Customer> list = context.Customers.ToList();
+                foreach (Customer tmp in list)
+                {
+                    if (tmp.CustomerId.Trim().Equals(id.Trim()))
+                    {
+                        check = true;
+                    }
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Bug in GetAllCustomer function!");
+
+                throw new Exception("Error at CheckIDExist: " + ex.Message);
             }
-            return list;
+            return check;
         }
+
+        public bool CheckEmailExist(string email)
+        {
+            bool check = false;
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                List<Customer> list = context.Customers.ToList();
+                foreach (Customer tmp in list)
+                {
+                    if (tmp.Email.Trim().Equals(email.Trim()))
+                    {
+                        check = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error at CheckIDExist: " + ex.Message);
+            }
+            return check;
+        }
+
+        public bool CheckEmailExist(string id, string email)
+        {
+            bool check = false;
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                List<Customer> list = context.Customers.ToList();
+                foreach (Customer tmp in list)
+                {
+                    if (tmp.Email.Trim().Equals(email.Trim()) && !tmp.CustomerId.Trim().Equals(id.Trim()))
+                    {
+                        check = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Error at CheckIDExist: " + ex.Message);
+            }
+            return check;
+        }
+
     }
 }

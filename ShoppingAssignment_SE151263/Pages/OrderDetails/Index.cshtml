@@ -18,29 +18,33 @@
             <h1 class="text-info">ORDER DETAIL LIST</h1>
         </div>
         <div class="text-right">
-            <a class="btn btn-info" asp-page="Create">Create new order detail</a>
+            <a class="btn btn-info" asp-page="Create">Create a new order detail</a>
         </div>
-        <br/>
+        <br />
         <table class="table">
             <thead class="text-center">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.OrderDetail[0].Order.OrderId)
+                        @Html.DisplayNameFor(model => model.OrderDetails[0].Order.OrderId)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.OrderDetail[0].Product)
+                        @Html.DisplayNameFor(model => model.OrderDetails[0].Product)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.OrderDetail[0].UnitPrice)
+                        @Html.DisplayNameFor(model => model.OrderDetails[0].UnitPrice)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.OrderDetail[0].Quantity)
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.QuantitySort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                            @Html.DisplayNameFor(model => model.OrderDetails[0].Quantity
+                    )
+                        </a>
                     </th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.OrderDetail)
+                @foreach (var item in Model.OrderDetails)
                 {
                     <tr>
                         <td class="text-center">
@@ -64,6 +68,23 @@
                 }
             </tbody>
         </table>
+
+        var prevDisabled = !Model.OrderDetails.HasPreviousPage ? "disabled" : "";
+        var nextDisabled = !Model.OrderDetails.HasNextPage ? "disabled" : "";
+
+        <div class="text-center">
+            <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.OrderDetails.PageIndex - 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @prevDisabled">Previous</a>
+
+            <a asp-page="./Index"
+       asp-route-sortOrder="@Model.CurrentSort"
+       asp-route-pageIndex="@(Model.OrderDetails.PageIndex + 1)"
+       asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-primary @nextDisabled">Next</a>
+        </div>
     }
 }
 

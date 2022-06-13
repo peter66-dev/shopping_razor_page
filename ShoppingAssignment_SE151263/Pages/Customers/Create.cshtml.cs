@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoppingAssignment_SE151263.DataAccess;
+using ShoppingAssignment_SE151263.Repository;
 
 namespace ShoppingAssignment_SE151263.Pages.Customers
 {
@@ -13,9 +14,12 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
     {
         private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
 
+        private ICustomerRepository customerRepo;
+
         public CreateModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
         {
             _context = context;
+            customerRepo = new CustomerRepository();
         }
 
         public IActionResult OnGet()
@@ -35,14 +39,42 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             }
             try
             {
-                _context.Customers.Add(Customer);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                List<Customer> list = _context.Customers.ToList();
+                bool isDuplicatedID = customerRepo.CheckIDExist(Customer.CustomerId.Trim());
+                bool isDuplicatedEmail = customerRepo.CheckEmailExist(Customer.Email.Trim());
+                if (isDuplicatedID) // ID trong database cô gửi có quá nhiều dấu cách ạ!
+                {
+                    ViewData["IDErrorMessage"] = $"ID {Customer.CustomerId} đã tồn tại!";
+                    Console.WriteLine("Duplicated ID! ID: " + Customer.CustomerId);
+                }
+                if (isDuplicatedEmail)
+                {
+                    ViewData["EmailErrorMessage"] = $"Email {Customer.Email} đã tồn tại!";
+                    Console.WriteLine("Duplicated Email! Email: " + Customer.Email);
+                }
+                if (!isDuplicatedEmail && !isDuplicatedID)
+                {
+                    _context.Customers.Add(Customer);
+                    int tmp = await _context.SaveChangesAsync();
+                    if (tmp > 0)
+                    {
+                        ViewData["IndexMessage"] = "Tạo mới thành công!";
+                    }
+                    else
+                    {
+                        ViewData["IndexMessage"] = "Tạo mới thất bại!";
+                    }
+                    return RedirectToPage("./Index");
+                }
+                else
+                {
+                    return Page();
+                }
             }
             catch (Exception ex)
             {
-                ViewData["ErrorMessage"] = "Lỗi: " + ex.Message;
-                return RedirectToPage("./Privacy");
+                ViewData["IDErrorMessage"] = "Error msg: " + ex.Message;
+                return Page();
             }
         }
     }

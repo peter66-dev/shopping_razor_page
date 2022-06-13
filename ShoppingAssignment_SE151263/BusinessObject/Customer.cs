@@ -9,6 +9,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
     public partial class Customer
     {
         [Display(Name ="ID")]
+        [Required(ErrorMessage = "Bạn phải nhập ID!")]
         public string CustomerId { get; set; }
 
         //[DataType(DataType.Password)]

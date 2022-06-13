@@ -7,16 +7,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShoppingAssignment_SE151263.DataAccess;
+using ShoppingAssignment_SE151263.Repository;
 
 namespace ShoppingAssignment_SE151263.Pages.Customers
 {
     public class EditModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
+        private readonly NorthwindCopyDBContext _context;
 
-        public EditModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
+        private ICustomerRepository customerRepo;
+
+        public EditModel(NorthwindCopyDBContext context)
         {
             _context = context;
+            customerRepo = new CustomerRepository();
         }
 
         [BindProperty]
@@ -46,11 +50,20 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
                 return Page();
             }
 
-            _context.Attach(Customer).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                bool check = customerRepo.CheckEmailExist(Customer.CustomerId.Trim(), Customer.Email.Trim());
+                if (!check)
+                {
+                    _context.Attach(Customer).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    return RedirectToPage("./Index");
+                }
+                else
+                {
+                    ViewData["EmailMessage"] = "Email này đã tồn tại!";
+                    return Page();
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -64,7 +77,6 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
                 }
             }
 
-            return RedirectToPage("./Index");
         }
 
         private bool CustomerExists(string id)
