@@ -26,6 +26,10 @@
                         <label asp-for="Product.ProductName" class="control-label"></label>
                         <input asp-for="Product.ProductName" class="form-control" />
                         <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+                        @if (ViewData["NameMessage"] != null)
+                        {
+                            <span class="text-danger">@ViewData["NameMessage"] </span>
+                        }
                     </div>
                     <div class="form-group">
                         <label asp-for="Product.SupplierId" class="control-label"></label>
@@ -51,6 +55,10 @@
                         <label asp-for="Product.ProductImage" class="control-label"></label>
                         <input asp-for="Product.ProductImage" class="form-control" />
                         <span asp-validation-for="Product.ProductImage" class="text-danger"></span>
+                        @if (ViewData["ImageMessage"] != null)
+                        {
+                            <span class="text-danger">@ViewData["ImageMessage"] </span>
+                        }
                     </div>
                     <div class="form-group">
                         <label asp-for="Product.ProductStatus" class="control-label"></label>

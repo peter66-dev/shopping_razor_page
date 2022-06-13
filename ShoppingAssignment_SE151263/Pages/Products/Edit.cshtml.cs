@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ShoppingAssignment_SE151263.DataAccess;
+using ShoppingAssignment_SE151263.Repository;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShoppingAssignment_SE151263.Pages.Products
 {
     public class EditModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
+        private readonly NorthwindCopyDBContext _context;
+        private IProductRepository proRepo;
 
-        public EditModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
+        public EditModel(NorthwindCopyDBContext context)
         {
             _context = context;
+            proRepo = new ProductRepository();
         }
 
         [BindProperty]
@@ -37,8 +39,8 @@ namespace ShoppingAssignment_SE151263.Pages.Products
             {
                 return NotFound();
             }
-           ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
-           ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
             return Page();
         }
 
@@ -46,16 +48,39 @@ namespace ShoppingAssignment_SE151263.Pages.Products
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
+            ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Product).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                bool isDuplicatedName = proRepo.CheckNameExist(Product.ProductId, Product.ProductName);
+                bool isDuplicatedImage = proRepo.CheckImageExist(Product.ProductId, Product.ProductImage);
+
+                if (isDuplicatedName)
+                {
+                    ViewData["NameMessage"] = $"Product name {Product.ProductName} đã tồn tại!";
+                }
+                if (isDuplicatedImage)
+                {
+                    ViewData["ImageMessage"] = $"Image link {Product.ProductImage} đã tồn tại!";
+                }
+
+                if (!isDuplicatedName && !isDuplicatedImage)
+                {
+                    Product.ProductName = Product.ProductName.Trim();
+                    Product.ProductImage = Product.ProductImage.Trim();
+                    _context.Attach(Product).State = EntityState.Modified;
+                    await _context.SaveChangesAsync();
+                    return RedirectToPage("./Index");
+                }
+                else
+                {
+                    return Page();
+                }
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -65,11 +90,11 @@ namespace ShoppingAssignment_SE151263.Pages.Products
                 }
                 else
                 {
+                    return Page();
                     throw;
                 }
             }
 
-            return RedirectToPage("./Index");
         }
 
         private bool ProductExists(int id)

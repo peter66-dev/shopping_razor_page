@@ -14,7 +14,7 @@
     }
     else
     {
-       <h1 class="text-info text-center">CREATE NEW PRODUCT</h1>
+        <h1 class="text-info text-center">CREATE NEW PRODUCT</h1>
 
         <hr />
         <div class="row">
@@ -25,6 +25,10 @@
                         <label asp-for="Product.ProductName" class="control-label"></label>
                         <input asp-for="Product.ProductName" class="form-control" />
                         <span asp-validation-for="Product.ProductName" class="text-danger"></span>
+                        @if (ViewData["ProductNameMessage"] != null)
+                        {
+                            <span class="text-danger">@ViewData["ProductNameMessage"] </span>
+                        }
                     </div>
                     <div class="form-group">
                         <label asp-for="Product.SupplierId" class="control-label"></label>
@@ -41,13 +45,17 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Product.UnitPrice" class="control-label"></label>
-                        <input asp-for="Product.UnitPrice" class="form-control" />
+                        <input type="number" asp-for="Product.UnitPrice" class="form-control" />
                         <span asp-validation-for="Product.UnitPrice" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Product.ProductImage" class="control-label"></label>
                         <input asp-for="Product.ProductImage" class="form-control" />
                         <span asp-validation-for="Product.ProductImage" class="text-danger"></span>
+                        @if (ViewData["ImageMessage"] != null)
+                        {
+                            <span class="text-danger">@ViewData["ImageMessage"] </span>
+                        }
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-primary" />

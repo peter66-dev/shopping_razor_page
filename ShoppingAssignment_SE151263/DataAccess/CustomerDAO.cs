@@ -43,7 +43,6 @@ namespace ShoppingAssignment_SE151263.DataAccess
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Error at CheckIDExist: " + ex.Message);
             }
             return check;
@@ -66,7 +65,6 @@ namespace ShoppingAssignment_SE151263.DataAccess
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Error at CheckIDExist: " + ex.Message);
             }
             return check;
@@ -89,7 +87,6 @@ namespace ShoppingAssignment_SE151263.DataAccess
             }
             catch (Exception ex)
             {
-
                 throw new Exception("Error at CheckIDExist: " + ex.Message);
             }
             return check;

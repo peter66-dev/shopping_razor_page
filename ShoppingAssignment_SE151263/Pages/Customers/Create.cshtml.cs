@@ -52,8 +52,11 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
                     ViewData["EmailErrorMessage"] = $"Email {Customer.Email} đã tồn tại!";
                     Console.WriteLine("Duplicated Email! Email: " + Customer.Email);
                 }
+
                 if (!isDuplicatedEmail && !isDuplicatedID)
                 {
+                    Customer.CustomerId = Customer.CustomerId.Trim();
+                    Customer.Email = Customer.Email.Trim();
                     _context.Customers.Add(Customer);
                     int tmp = await _context.SaveChangesAsync();
                     if (tmp > 0)

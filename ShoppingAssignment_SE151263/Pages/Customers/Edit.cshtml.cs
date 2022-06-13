@@ -55,6 +55,8 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
                 bool check = customerRepo.CheckEmailExist(Customer.CustomerId.Trim(), Customer.Email.Trim());
                 if (!check)
                 {
+                    Customer.CustomerId = Customer.CustomerId.Trim();
+                    Customer.Email = Customer.Email.Trim();
                     _context.Attach(Customer).State = EntityState.Modified;
                     await _context.SaveChangesAsync();
                     return RedirectToPage("./Index");
