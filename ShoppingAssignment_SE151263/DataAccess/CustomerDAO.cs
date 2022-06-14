@@ -35,7 +35,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 List<Customer> list = context.Customers.ToList();
                 foreach (Customer tmp in list)
                 {
-                    if (tmp.CustomerId.Trim().Equals(id.Trim()))
+                    if (tmp.CustomerId.Trim().Equals(id.Trim())) // ID trong database cô gửi có quá nhiều dấu cách ạ!
                     {
                         check = true;
                     }
@@ -78,7 +78,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 var context = new NorthwindCopyDBContext();
                 List<Customer> list = context.Customers.ToList();
                 foreach (Customer tmp in list)
-                {
+                {// ID trong database cô gửi có quá nhiều dấu cách ạ!
                     if (tmp.Email.Trim().Equals(email.Trim()) && !tmp.CustomerId.Trim().Equals(id.Trim()))
                     {
                         check = true;

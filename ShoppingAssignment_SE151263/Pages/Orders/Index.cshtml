@@ -46,7 +46,9 @@
 
         if (Model.Orders.Count != 0)
         {
-            <p>Total: @ViewData["total"] VNĐ</p>
+            var indianCulture = new System.Globalization.CultureInfo("vi-VN");
+            <p class="text-right">Total: <span class="text-danger">@ViewData["total"]</span></p>
+            //<p class="text-right">Total: <span class="text-danger">@string.Format(indianCulture, "{0:N}", @ViewData["total"])</span> VNĐ</p>
         }
 
         <table class="table">
@@ -56,20 +58,20 @@
                         @Html.DisplayNameFor(m => m.Orders[0].OrderId)
                     </th>
                     <th>
-                        <a asp-page="./Index" asp-route-sortOrder="@Model.CustomerIDSort"
-                        asp-route-currentFilter="@Model.CurrentFilter">
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.IDSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
                             @Html.DisplayNameFor(model => model.Orders[0].CustomerId)
                         </a>
                     </th>
                     <th>
                         <a asp-page="./Index" asp-route-sortOrder="@Model.FreightSort"
-                        asp-route-currentFilter="@Model.CurrentFilter">
+                   asp-route-currentFilter="@Model.CurrentFilter">
                             @Html.DisplayNameFor(model => model.Orders[0].Freight)
                         </a>
                     </th>
                     <th>
                         <a asp-page="./Index" asp-route-sortOrder="@Model.OrderDateSort"
-                        asp-route-currentFilter="@Model.CurrentFilter">
+                   asp-route-currentFilter="@Model.CurrentFilter">
                             @Html.DisplayNameFor(model => model.Orders[0].OrderDate)
                         </a>
                     </th>

@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ShoppingAssignment_SE151263.DataAccess;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShoppingAssignment_SE151263.Pages.OrderDetails
 {
     public class IndexModel : PageModel
     {
         private readonly NorthwindCopyDBContext _context;
+
         private readonly IConfiguration configuration;
 
         public IndexModel(NorthwindCopyDBContext context, IConfiguration con)

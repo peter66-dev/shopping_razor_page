@@ -34,6 +34,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
         [Required(ErrorMessage = "Bạn phải nhập chuẩn mẫu date ngày-tháng-năm!")]
         public DateTime? ShippedDate { get; set; }
 
+        [Range(10000, 1000000)]
         [Required(ErrorMessage = "Bạn phải nhập phí chuyển tiền!")]
         [Display(Name ="Ship money")]
         public decimal? Freight { get; set; }

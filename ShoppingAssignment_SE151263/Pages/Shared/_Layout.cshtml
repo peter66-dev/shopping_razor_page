@@ -40,11 +40,25 @@
                             if (Accessor.HttpContext.Session.GetString("EmailAdmin") == null && Accessor.HttpContext.Session.GetString("customerID") == null)
                             {
                                 <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page="/Register">Register</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-page="/Login">Login</a>
                                 </li>
                             }
-                            else
+                            else if(Accessor.HttpContext.Session.GetString("EmailAdmin") != null)
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link text-danger font-weight-bold">Xin chào ADMIN</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-page-handler="Logout" asp-page="/Login">Log out</a>
+                                </li>
+                            }else if (Accessor.HttpContext.Session.GetString("customerName") != null)
+                            {
+                                 <li class="nav-item">
+                                    <a class="nav-link text-info font-weight-bold">Xin chào @Accessor.HttpContext.Session.GetString("customerName")</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-page-handler="Logout" asp-page="/Login">Log out</a>
                                 </li>

@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ShoppingAssignment_SE151263.DataAccess;
+using System.Threading.Tasks;
 
 namespace ShoppingAssignment_SE151263.Pages.Orders
 {
     public class DetailsModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
+        private readonly NorthwindCopyDBContext _context;
 
-        public DetailsModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
+        public DetailsModel(NorthwindCopyDBContext context)
         {
             _context = context;
         }

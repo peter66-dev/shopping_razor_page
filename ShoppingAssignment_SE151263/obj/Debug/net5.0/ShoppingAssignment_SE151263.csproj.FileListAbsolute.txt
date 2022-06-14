@@ -165,3 +165,4 @@ E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignm
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\ShoppingAssignment_SE151263.pdb
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\ShoppingAssignment_SE151263.genruntimeconfig.cache
 E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\ref\ShoppingAssignment_SE151263.dll
+E:\Chuyen_nganh_7\PRN221\Assignments\ShoppingAssignment_SE151263\ShoppingAssignment_SE151263\obj\Debug\net5.0\Razor\Pages\Register.cshtml.g.cs

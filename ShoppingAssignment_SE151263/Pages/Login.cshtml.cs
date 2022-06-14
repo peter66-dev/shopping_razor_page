@@ -51,6 +51,7 @@ namespace ShoppingAssignment_SE151263.Pages
                     {
                         Console.WriteLine("Toi la customer!");
                         HttpContext.Session.SetString("customerID", tmp.CustomerId);
+                        HttpContext.Session.SetString("customerName", tmp.ContactName);
                         return new RedirectToPageResult("./CustomerDetail/CustomerDetail");
                     }
                 }

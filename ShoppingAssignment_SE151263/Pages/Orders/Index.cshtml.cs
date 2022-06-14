@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ShoppingAssignment_SE151263.DataAccess;
+using ShoppingAssignment_SE151263.Repository;
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ShoppingAssignment_SE151263.Pages.Orders
 {
@@ -14,16 +15,19 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
     {
         private readonly NorthwindCopyDBContext _context;
 
+        private IOrderRepository orderRepo;
+
         private readonly IConfiguration configuration;
         public IndexModel(NorthwindCopyDBContext context, IConfiguration con)
         {
             _context = context;
             configuration = con;
+            orderRepo = new OrderRepository();
         }
 
         public PaginatedList<Order> Orders { get; set; }
 
-        public string CustomerIDSort { get; set; }
+        public string IDSort { get; set; }
         public string OrderDateSort { get; set; }
         public string FreightSort { get; set; }
         public string CurrentFilter { get; set; }
@@ -38,10 +42,12 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
 
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
+            //StartDate = DateTime.Now;
+            //EndDate = DateTime.Now;
             CurrentSort = sortOrder;
-            CustomerIDSort = String.IsNullOrEmpty(sortOrder) ? "customerid_desc" : "";
+            IDSort = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             OrderDateSort = String.IsNullOrEmpty(sortOrder) ? "orderdate_desc" : "";
-            OrderDateSort = String.IsNullOrEmpty(sortOrder) ? "freight_desc" : "";
+            FreightSort = String.IsNullOrEmpty(sortOrder) ? "freight_desc" : "";
 
             if (searchString != null)
             {
@@ -55,14 +61,23 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
             CurrentFilter = searchString;
             IQueryable<Order> ordersIQ = from o in _context.Orders
                                          select o;
+
+            double total = 0;
             if (!String.IsNullOrEmpty(searchString))
             {
+                total = orderRepo.GetTotal(_context.Orders.Where(o => o.CustomerId.Trim().Contains(searchString.Trim())).ToList());
                 ordersIQ = ordersIQ.Where(c => c.CustomerId.Contains(searchString));
             }
+            else
+            {
+                total = orderRepo.GetTotal(_context.Orders.ToList());
+            }
+            var info = CultureInfo.GetCultureInfo("vi-VN");
+            ViewData["total"] = String.Format(info, "{0:c}", total);
 
             if (!String.IsNullOrEmpty(sortOrder))
             {
-                if (sortOrder.Equals("customerid_desc"))
+                if (sortOrder.Equals("id_desc"))
                 {
                     ordersIQ = ordersIQ.OrderByDescending(o => o.CustomerId);
                 }
@@ -74,37 +89,21 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
                 {
                     ordersIQ = ordersIQ.OrderByDescending(o => o.Freight);
                 }
-                else
-                {
-                    ordersIQ = ordersIQ.OrderByDescending(o => o.CustomerId);
-                }
             }
             else
             {
-                ordersIQ = ordersIQ.OrderByDescending(o => o.CustomerId);
+                ordersIQ = ordersIQ.OrderByDescending(o => o.CustomerId).Reverse();
             }
 
 
             var pageSize = configuration.GetValue("PageSize", 4);
             Orders = await PaginatedList<Order>.CreateAsync(
                 ordersIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
-            if (Orders.Count != 0)
-            {
-                double total = 0;
-                foreach (var o in Orders)
-                {
-                    total += (double)o.Freight.Value;
-                    List<OrderDetail> list = _context.OrderDetails.Where(ord => ord.OrderId.Equals(o.OrderId)).ToList();
-                    if (list.Count != 0)
-                    {
-                        foreach (var od in list)
-                        {
-                            total += (double)(od.Quantity * od.UnitPrice);
-                        }
-                    }
-                }
-                ViewData["total"] = Math.Round(total, 2);
-            }
+            //if (Orders.Count != 0)
+            //{
+            //    double total = orderRepo.GetTotal(this.Orders);
+            //    ViewData["total"] = Math.Round(total, 2);
+            //}
         }
 
         public IActionResult OnGetStatistic()

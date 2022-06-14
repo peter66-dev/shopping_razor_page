@@ -7,15 +7,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShoppingAssignment_SE151263.Pages.Customers
+namespace ShoppingAssignment_SE151263.Pages
 {
-    public class CreateModel : PageModel
+    public class RegisterModel : PageModel
     {
         private readonly NorthwindCopyDBContext _context;
 
         private ICustomerRepository customerRepo;
+        [BindProperty]
+        public Customer Customer { get; set; }
 
-        public CreateModel(NorthwindCopyDBContext context)
+        public RegisterModel(NorthwindCopyDBContext context)
         {
             _context = context;
             customerRepo = new CustomerRepository();
@@ -26,10 +28,6 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             return Page();
         }
 
-        [BindProperty]
-        public Customer Customer { get; set; }
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -41,7 +39,7 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
                 List<Customer> list = _context.Customers.ToList();
                 bool isDuplicatedID = customerRepo.CheckIDExist(Customer.CustomerId.Trim());
                 bool isDuplicatedEmail = customerRepo.CheckEmailExist(Customer.Email.Trim());
-                if (isDuplicatedID) // ID trong database cô gửi có quá nhiều dấu cách ạ!
+                if (isDuplicatedID) 
                 {
                     ViewData["IDErrorMessage"] = $"ID {Customer.CustomerId} đã tồn tại!";
                     Console.WriteLine("Duplicated ID! ID: " + Customer.CustomerId);
@@ -58,7 +56,7 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
                     Customer.Email = Customer.Email.Trim();
                     _context.Customers.Add(Customer);
                     await _context.SaveChangesAsync();
-                    return RedirectToPage("./Index");
+                    return RedirectToPage("./Login");
                 }
                 else
                 {
