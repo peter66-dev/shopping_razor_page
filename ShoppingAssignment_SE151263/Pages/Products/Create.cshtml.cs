@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoppingAssignment_SE151263.DataAccess;
 using ShoppingAssignment_SE151263.Repository;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ShoppingAssignment_SE151263.Pages.Products
@@ -36,6 +37,10 @@ namespace ShoppingAssignment_SE151263.Pages.Products
             ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "CompanyName");
             if (!ModelState.IsValid)
             {
+                var message = string.Join(" | ", ModelState.Values
+                         .SelectMany(v => v.Errors)
+                         .Select(e => e.ErrorMessage));
+                ViewData["ProductNameMessage"] = message.ToString();
                 return Page();
             }
 
@@ -43,6 +48,7 @@ namespace ShoppingAssignment_SE151263.Pages.Products
             {
                 bool isDuplicatedName = proRepo.CheckNameExist(Product.ProductName);
                 bool isDuplicatedImage = proRepo.CheckImageExist(Product.ProductImage);
+                Console.WriteLine($"Product name: {Product.ProductName}, image: {Product.ProductImage}");
 
                 if (isDuplicatedName)
                 {
@@ -71,7 +77,7 @@ namespace ShoppingAssignment_SE151263.Pages.Products
             }
             catch (Exception ex)
             {
-                ViewData["IDErrorMessage"] = "Error msg: " + ex.Message;
+                ViewData["ProductNameMessage"] = "Error msg: " + ex.Message;
                 return Page();
             }
 

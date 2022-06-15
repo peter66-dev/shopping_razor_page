@@ -19,11 +19,15 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
             _context = context;
             configuration = con;
         }
+        
         public string QuantitySort { get; set; }
+        
         public string CurrentFilter { get; set; }
+       
         public string CurrentSort { get; set; }
+       
         public PaginatedList<OrderDetail> OrderDetails { get; set; }
-
+        
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
             CurrentSort = sortOrder;
@@ -56,7 +60,7 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
             }
 
 
-            var pageSize = configuration.GetValue("PageSize", 4);
+            var pageSize = configuration.GetValue("PageSize", 10);
             OrderDetails = await PaginatedList<OrderDetail>.CreateAsync(
                 orderDetailsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }

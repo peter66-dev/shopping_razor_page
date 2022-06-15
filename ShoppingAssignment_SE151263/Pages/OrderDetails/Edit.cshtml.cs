@@ -20,23 +20,23 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
         [BindProperty]
         public OrderDetail OrderDetail { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(string orderId, int productId)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(orderId))
             {
                 return NotFound();
             }
 
             OrderDetail = await _context.OrderDetails
                 .Include(o => o.Order)
-                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderId == id);
+                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderId.Trim().Equals(orderId.Trim()) && m.ProductId == productId);
 
             if (OrderDetail == null)
             {
                 return NotFound();
             }
-           ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId");
-           ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductName");
+            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId");
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductName");
             return Page();
         }
 
@@ -44,15 +44,17 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId");
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductName");
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(OrderDetail).State = EntityState.Modified;
 
             try
             {
+                _context.Attach(OrderDetail).State = EntityState.Modified;
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

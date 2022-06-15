@@ -67,7 +67,7 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             }
 
 
-            var pageSize = configuration.GetValue("PageSize", 4);
+            var pageSize = configuration.GetValue("PageSize", 10);
             Customers = await PaginatedList<Customer>.CreateAsync(
                 customersIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }

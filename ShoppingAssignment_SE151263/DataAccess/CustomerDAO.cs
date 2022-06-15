@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShoppingAssignment_SE151263.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -48,6 +49,22 @@ namespace ShoppingAssignment_SE151263.DataAccess
             return check;
         }
 
+        public Customer GetCustomerByID(string id)
+        {
+            Customer cus = null;
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                cus = context.Customers.SingleOrDefault(c => c.CustomerId.Trim().Equals(id.Trim()));
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error at CheckIDExist: " + ex.Message);
+            }
+            return cus;
+        }
+
         public bool CheckEmailExist(string email)
         {
             bool check = false;
@@ -83,6 +100,39 @@ namespace ShoppingAssignment_SE151263.DataAccess
                     {
                         check = true;
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error at CheckIDExist: " + ex.Message);
+            }
+            return check;
+        }
+
+        public bool DeleteCustomer(string id)
+        {
+            bool check = false;
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                Customer cus = context.Customers.SingleOrDefault(c => c.CustomerId.Trim().Equals(id.Trim()));
+                if (cus != null)
+                {
+                    IOrderRepository orRepo = new OrderRepository();
+                    IOrderDetailRepository odRepo = new OrderDetailRepository();
+                    List<Order> Orders = orRepo.GetOrdersByCustomerID(id);
+
+                    // deleting order details by orderID
+                    foreach (var ord in Orders)
+                    {
+                        odRepo.DeleteOrder(ord.OrderId);
+                    }
+
+                    // deleting orders by customerID
+                    orRepo.DeleteOrder(id);
+
+                    context.Customers.Remove(cus);
+                    check = true;
                 }
             }
             catch (Exception ex)

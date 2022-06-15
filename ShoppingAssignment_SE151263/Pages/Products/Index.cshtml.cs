@@ -21,7 +21,6 @@ namespace ShoppingAssignment_SE151263.Pages.Products
             configuration = con;
         }
 
-        //public IList<Product> Product { get;set; }
         public PaginatedList<Product> Products { get; set; }
 
         public string NameSort { get; set; }
@@ -32,9 +31,6 @@ namespace ShoppingAssignment_SE151263.Pages.Products
 
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
-            //Product = await _context.Products
-            //    .Include(p => p.Category)
-            //    .Include(p => p.Supplier).ToListAsync();
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             QuantitySort = String.IsNullOrEmpty(sortOrder) ? "quantity_desc" : "";
@@ -78,7 +74,7 @@ namespace ShoppingAssignment_SE151263.Pages.Products
             }
 
 
-            var pageSize = configuration.GetValue("PageSize", 4);
+            var pageSize = configuration.GetValue("PageSize", 10);
             Products = await PaginatedList<Product>.CreateAsync(
                 productsIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
         }

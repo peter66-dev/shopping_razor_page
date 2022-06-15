@@ -52,7 +52,7 @@ namespace ShoppingAssignment_SE151263.Pages.CustomerDetail
                 }
 
 
-                var pageSize = configuration.GetValue("PageSize", 4);
+                var pageSize = configuration.GetValue("PageSize", 10);
                 OrderDetails = await PaginatedList<OrderDetail>.CreateAsync(
                     ordersDetailIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
                 Console.WriteLine($"Co {OrderDetails.Count} hoa don!");

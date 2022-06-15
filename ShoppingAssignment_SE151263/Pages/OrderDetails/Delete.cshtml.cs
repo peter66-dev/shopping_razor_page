@@ -18,16 +18,16 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
         [BindProperty]
         public OrderDetail OrderDetail { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task<IActionResult> OnGetAsync(string orderId, int productId)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(orderId))
             {
                 return NotFound();
             }
 
             OrderDetail = await _context.OrderDetails
                 .Include(o => o.Order)
-                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderId == id);
+                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderId.Trim().Equals(orderId.Trim()) && m.ProductId == productId);
 
             if (OrderDetail == null)
             {
@@ -36,14 +36,16 @@ namespace ShoppingAssignment_SE151263.Pages.OrderDetails
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string id)
+        public async Task<IActionResult> OnPostAsync(string orderId, int productId)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(orderId))
             {
                 return NotFound();
             }
 
-            OrderDetail = await _context.OrderDetails.FindAsync(id);
+            OrderDetail = await _context.OrderDetails
+                .Include(o => o.Order)
+                .Include(o => o.Product).FirstOrDefaultAsync(m => m.OrderId.Trim().Equals(orderId.Trim()) && m.ProductId == productId);
 
             if (OrderDetail != null)
             {

@@ -2,17 +2,20 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ShoppingAssignment_SE151263.DataAccess;
+using ShoppingAssignment_SE151263.Repository;
 using System.Threading.Tasks;
 
 namespace ShoppingAssignment_SE151263.Pages.Customers
 {
     public class DeleteModel : PageModel
     {
-        private readonly ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext _context;
+        private readonly NorthwindCopyDBContext _context;
+        private ICustomerRepository cusRepo;
 
-        public DeleteModel(ShoppingAssignment_SE151263.DataAccess.NorthwindCopyDBContext context)
+        public DeleteModel(NorthwindCopyDBContext context)
         {
             _context = context;
+            cusRepo = new CustomerRepository();
         }
 
         [BindProperty]
@@ -34,22 +37,24 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string id)
+        public IActionResult OnPostAsync(string id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Customer = await _context.Customers.FindAsync(id);
-
             if (Customer != null)
             {
-                _context.Customers.Remove(Customer);
-                await _context.SaveChangesAsync();
+                if (cusRepo.DeleteCustomer(id))
+                {
+                    ViewData["Message"] = "Delete failed!";
+                    return RedirectToPage("./Index");
+                }
             }
 
-            return RedirectToPage("./Index");
+            Customer = cusRepo.GetCustomerByID(id); ;
+            return Page();
         }
     }
 }

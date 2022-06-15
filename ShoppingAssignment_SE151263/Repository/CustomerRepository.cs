@@ -9,5 +9,9 @@ namespace ShoppingAssignment_SE151263.Repository
         public bool CheckIDExist(string id) => CustomerDAO.Instance.CheckIDExist(id);
 
         public bool CheckEmailExist(string id, string email) => CustomerDAO.Instance.CheckEmailExist(id, email);
+
+        public bool DeleteCustomer(string id) => CustomerDAO.Instance.DeleteCustomer(id);
+
+        public Customer GetCustomerByID(string id) => CustomerDAO.Instance.GetCustomerByID(id);
     }
 }

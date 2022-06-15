@@ -28,7 +28,7 @@
                         @Html.DisplayNameFor(model => model.OrderDetails[0].Order.OrderId)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.OrderDetails[0].Product)
+                        @Html.DisplayNameFor(model => model.OrderDetails[0].Product.ProductId)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.OrderDetails[0].UnitPrice)
@@ -48,10 +48,10 @@
                 {
                     <tr>
                         <td class="text-center">
-                            @Html.DisplayFor(modelItem => item.Order.OrderId)
+                            @item.OrderId
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Product.ProductName)
+                        <td class="text-center">
+                            @item.ProductId
                         </td>
                         <td class="text-right">
                             @Html.DisplayFor(modelItem => item.UnitPrice)
@@ -60,9 +60,16 @@
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         <td class="text-center">
-                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+
+                            @*                            
+                            @Html.ActionLink("Edit", "Edit", new { orderId=item.OrderId,   productId=item.ProductId  }) |
+                            @Html.ActionLink("Details", "Details", new {orderId=item.OrderId,   productId=item.ProductId }) |
+                            @Html.ActionLink("Delete", "Delete", new {orderId=item.OrderId,   productId=item.ProductId})
+                            *@
+
+                            <a asp-page="./Edit" asp-route-orderId="@item.OrderId" asp-route-productId="@item.ProductId">Edit</a> |
+                            <a asp-page="./Details" asp-route-orderId="@item.OrderId" asp-route-productId="@item.ProductId">Details</a> |
+                            <a asp-page="./Delete" asp-route-orderId="@item.OrderId" asp-route-productId="@item.ProductId">Delete</a>
                         </td>
                     </tr>
                 }

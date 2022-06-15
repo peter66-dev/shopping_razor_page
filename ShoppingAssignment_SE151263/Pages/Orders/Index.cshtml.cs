@@ -42,8 +42,12 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
 
         public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
         {
-            //StartDate = DateTime.Now;
-            //EndDate = DateTime.Now;
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now;
+            if (String.IsNullOrEmpty(sortOrder))
+            {
+                sortOrder = "asc";
+            }
             CurrentSort = sortOrder;
             IDSort = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
             OrderDateSort = String.IsNullOrEmpty(sortOrder) ? "orderdate_desc" : "";
@@ -96,20 +100,51 @@ namespace ShoppingAssignment_SE151263.Pages.Orders
             }
 
 
-            var pageSize = configuration.GetValue("PageSize", 4);
+            var pageSize = configuration.GetValue("PageSize", 10);
             Orders = await PaginatedList<Order>.CreateAsync(
                 ordersIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
-            //if (Orders.Count != 0)
-            //{
-            //    double total = orderRepo.GetTotal(this.Orders);
-            //    ViewData["total"] = Math.Round(total, 2);
-            //}
         }
 
-        public IActionResult OnGetStatistic()
+        public async Task<IActionResult> OnPostAsync()
         {
             Console.WriteLine("Start date: " + StartDate);
             Console.WriteLine("End date: " + EndDate);
+            if (StartDate.CompareTo(EndDate) > 0)
+            {
+                Console.WriteLine("Date is not valid");
+                ViewData["OrderMessage"] = "Bạn chọn khoảng thời gian không hợp lệ!";
+            }
+            else if (StartDate.CompareTo(EndDate) == 0)
+            {
+                IQueryable<Order> ordersIQ = from o in _context.Orders
+                                             where o.OrderDate.Value.CompareTo(StartDate) == 0
+                                             select o;
+                double total = orderRepo.GetTotal(ordersIQ.ToList());
+                var info = CultureInfo.GetCultureInfo("vi-VN");
+                ViewData["total"] = String.Format(info, "{0:c}", total);
+                Orders = await PaginatedList<Order>.CreateAsync(ordersIQ.AsNoTracking(), 1, 4);
+                Console.WriteLine("Date is equal");
+                if (Orders.Count > 0)
+                {
+                    ViewData["OrderMessage"] = "Cửa hàng của bạn đang phát triển rất tốt!";
+                }
+            }
+            else
+            {
+                IQueryable<Order> ordersIQ = from o in _context.Orders
+                                             where o.OrderDate.Value.CompareTo(StartDate) >= 0 && o.OrderDate.Value.CompareTo(EndDate) <= 0
+                                             select o;
+                double total = orderRepo.GetTotal(ordersIQ.ToList());
+                var info = CultureInfo.GetCultureInfo("vi-VN");
+                ViewData["total"] = String.Format(info, "{0:c}", total);
+                Orders = await PaginatedList<Order>.CreateAsync(ordersIQ.AsNoTracking(), 1, 4);
+                Console.WriteLine("Date is valid");
+                if (Orders.Count > 0)
+                {
+                    ViewData["OrderMessage"] = "Cửa hàng của bạn đang phát triển rất tốt!";
+                }
+
+            }
             return Page();
         }
     }

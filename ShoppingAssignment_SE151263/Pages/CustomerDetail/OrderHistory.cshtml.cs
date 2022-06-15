@@ -20,26 +20,24 @@ namespace ShoppingAssignment_SE151263.Pages.CustomerDetail
             _context = context;
             configuration = con;
         }
-        public string DateSort { get; set; }
-        public string CurrentFilter { get; set; }
-        public string CurrentSort { get; set; }
         public PaginatedList<Order> Orders { get; set; }
+        public string OrderDateSort { get; set; }
+        public string CurrentSort { get; set; }
 
-        public async Task OnGetAsync(string sortOrder, string currentFilter, int? pageIndex)
+        public async Task OnGetAsync(string sortOrder, int? pageIndex)
         {
             Console.WriteLine("Toi la OnGetAsync method trong OrderHistoryModel!");
             string customerID = HttpContext.Session.GetString("customerID");
             if (customerID != null)
             {
                 CurrentSort = sortOrder;
-                DateSort = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
-
-                CurrentFilter = currentFilter;
+                OrderDateSort = String.IsNullOrEmpty(sortOrder) ? "orderdate_desc" : "";
+                
                 IQueryable<Order> ordersIQ = from o in _context.Orders
                                              where o.CustomerId.Equals(customerID)
                                              select o;
 
-                if (!String.IsNullOrEmpty(sortOrder))
+                if (!String.IsNullOrEmpty(sortOrder)) // có 
                 {
                     ordersIQ = ordersIQ.OrderByDescending(c => c.OrderDate);
                 }
@@ -49,7 +47,7 @@ namespace ShoppingAssignment_SE151263.Pages.CustomerDetail
                 }
 
 
-                var pageSize = configuration.GetValue("PageSize", 4);
+                var pageSize = configuration.GetValue("PageSize", 10);
                 Orders = await PaginatedList<Order>.CreateAsync(
                     ordersIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
                 Console.WriteLine($"Co {Orders.Count} hoa don!");

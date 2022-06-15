@@ -58,6 +58,11 @@
                         }
                     </div>
                     <div class="form-group">
+                        <label asp-for="Product.ProductStatus" class="control-label"></label>
+                        <input type="number" asp-for="Product.ProductStatus" class="form-control"/>
+                        <span asp-validation-for="Product.ProductStatus" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
                 </form>

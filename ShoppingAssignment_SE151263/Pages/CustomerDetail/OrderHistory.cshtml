@@ -32,8 +32,7 @@
                         @Html.DisplayNameFor(m => m.Orders[0].CustomerId)
                     </th>
                     <th>
-                        <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort"
-                         asp-route-currentFilter="@Model.CurrentFilter">
+                        <a asp-page="./Index" asp-route-sortOrder="@Model.OrderDateSort">
                             @Html.DisplayNameFor(model => model.Orders[0].OrderDate)
                         </a>
                     </th>
@@ -92,13 +91,11 @@
             <a asp-page="./Index"
        asp-route-sortOrder="@Model.CurrentSort"
        asp-route-pageIndex="@(Model.Orders.PageIndex - 1)"
-       asp-route-currentFilter="@Model.CurrentFilter"
        class="btn btn-primary @prevDisabled">Previous</a>
 
             <a asp-page="./Index"
        asp-route-sortOrder="@Model.CurrentSort"
        asp-route-pageIndex="@(Model.Orders.PageIndex + 1)"
-       asp-route-currentFilter="@Model.CurrentFilter"
        class="btn btn-primary @nextDisabled">Next</a>
         </div>
 

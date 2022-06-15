@@ -14,8 +14,11 @@
     }
     else
     {
-       <h1 class="text-info text-center">CREATE NEW ORDER DETAIL</h1>
-
+        <h1 class="text-info text-center">CREATE NEW ORDER DETAIL</h1>
+        @if (@ViewData["OrderDetailMessage"] != null)
+        {
+            <p class="text-center text-danger">@ViewData["OrderDetailMessage"]</p>
+        }
         <hr />
         <div class="row">
             <div class="col-md-4">
@@ -29,11 +32,13 @@
                         <label asp-for="OrderDetail.ProductId" class="control-label"></label>
                         <select asp-for="OrderDetail.ProductId" class="form-control" asp-items="ViewBag.ProductId"></select>
                     </div>
+                    @*
                     <div class="form-group">
                         <label asp-for="OrderDetail.UnitPrice" class="control-label"></label>
                         <input asp-for="OrderDetail.UnitPrice" class="form-control" />
                         <span asp-validation-for="OrderDetail.UnitPrice" class="text-danger"></span>
                     </div>
+                    *@
                     <div class="form-group">
                         <label asp-for="OrderDetail.Quantity" class="control-label"></label>
                         <input asp-for="OrderDetail.Quantity" class="form-control" />

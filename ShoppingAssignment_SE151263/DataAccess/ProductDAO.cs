@@ -37,7 +37,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 List<Product> list = context.Products.ToList();
                 foreach (Product tmp in list)
                 {
-                    if (tmp.ProductName.Trim().Trim().Equals(name.Trim()))
+                    if (tmp.ProductName.ToLower().Trim().Equals(name.ToLower().Trim()))
                     {
                         check = true;
                     }
@@ -59,7 +59,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 List<Product> list = context.Products.ToList();
                 foreach (Product tmp in list)
                 {
-                    if (tmp.ProductName.Trim().Equals(name.Trim()) && tmp.ProductId != id)
+                    if (tmp.ProductName.ToLower().Trim().Equals(name.ToLower().Trim()) && tmp.ProductId != id)
                     {
                         check = true;
                     }
@@ -81,7 +81,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 List<Product> list = context.Products.ToList();
                 foreach (Product tmp in list)
                 {
-                    if (tmp.ProductImage.Trim().Trim().Equals(img.Trim()))
+                    if (tmp.ProductImage.ToLower().Trim().Equals(img.ToLower().Trim()))
                     {
                         check = true;
                     }
@@ -103,7 +103,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 List<Product> list = context.Products.ToList();
                 foreach (Product tmp in list)
                 {
-                    if (tmp.ProductImage.Trim().Equals(img.Trim()) && tmp.ProductId != id)
+                    if (tmp.ProductImage.ToLower().Trim().Equals(img.Trim()) && tmp.ProductId != id)
                     {
                         check = true;
                     }
@@ -114,6 +114,64 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 throw new Exception("Error at CheckImageExist: " + ex.Message);
             }
             return check;
+        }
+
+        public bool CheckQuantity(int id, int quantity)
+        {
+            bool check = false;
+
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                Product pro = context.Products.SingleOrDefault(p => p.ProductId == id);
+                if (quantity <= pro.QuantityPerUnit)
+                {
+                    check = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error at CheckQuantity:" + ex.Message);
+            }
+
+            return check;
+        }
+        public bool SubQuantity(int id, int quantity)
+        {
+            bool check = false;
+
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                Product pro = context.Products.SingleOrDefault(p => p.ProductId == id);
+                pro.QuantityPerUnit -= quantity;
+                if (pro.QuantityPerUnit >=0)
+                {
+                    check = true;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error at SubQuantity:" + ex.Message);
+            }
+
+            return check;
+        }
+
+        public Product GetProductByID(int id)
+        {
+            Product pro = null;
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                pro = context.Products.SingleOrDefault(p => p.ProductId == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error at SubQuantity:" + ex.Message);
+            }
+            return pro;
         }
 
     }

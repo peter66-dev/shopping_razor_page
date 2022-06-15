@@ -15,6 +15,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
         }
 
         public int ProductId { get; set; }
+
         [Display(Name ="Name")]
         [Required(ErrorMessage ="Bạn phải điền tên cho sản phẩm!")]
         public string ProductName { get; set; }
@@ -26,8 +27,8 @@ namespace ShoppingAssignment_SE151263.DataAccess
         public int? CategoryId { get; set; }
         
         [Display(Name = "Quantity")]
-        [Range(1, 10000)]
-        [Required(ErrorMessage ="Số lượng phải là số nguyên lớn hơn 0!")]
+        [Range(0, 10000)]
+        [Required(ErrorMessage ="Số lượng phải là số nguyên >= 0!")]
         public int? QuantityPerUnit { get; set; }
 
         [Display(Name ="Price")]
@@ -41,6 +42,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
 
         [Display(Name ="Status")]
         [Range(0, 1)]
+        [Required(ErrorMessage ="Chỉ được nhập 0 và 1")]
         public byte? ProductStatus { get; set; }
 
         [BindProperty]
@@ -48,6 +50,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
 
         [BindProperty]
         public virtual Supplier Supplier { get; set; }
+
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }
