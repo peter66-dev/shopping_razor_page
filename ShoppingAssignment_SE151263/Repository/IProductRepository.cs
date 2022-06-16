@@ -17,5 +17,7 @@ namespace ShoppingAssignment_SE151263.Repository
         public bool SubQuantity(int id, int quantity);
 
         public Product GetProductByID(int id);
+
+        public bool DeleteProduct(int id);
     }
 }

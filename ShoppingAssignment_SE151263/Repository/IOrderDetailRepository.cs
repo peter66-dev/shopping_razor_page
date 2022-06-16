@@ -10,5 +10,7 @@ namespace ShoppingAssignment_SE151263.Repository
 
         public void DeleteOrder(string orderId);
 
+        public List<OrderDetail> GetListByProductID(int productId);
+
     }
 }

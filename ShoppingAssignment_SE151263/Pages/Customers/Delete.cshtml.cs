@@ -48,8 +48,13 @@ namespace ShoppingAssignment_SE151263.Pages.Customers
             {
                 if (cusRepo.DeleteCustomer(id))
                 {
-                    ViewData["Message"] = "Delete failed!";
+                    System.Console.WriteLine("Xoa CUSTOMER thanh cong!");
                     return RedirectToPage("./Index");
+                }
+                else
+                {
+                    System.Console.WriteLine("Xoa CUSTOMER that bai!");
+                    ViewData["Message"] = "Xoá customer thất bại vì có liên quan tới các bảng orders khác!";
                 }
             }
 

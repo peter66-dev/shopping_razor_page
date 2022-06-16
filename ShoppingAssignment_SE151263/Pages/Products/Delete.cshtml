@@ -15,7 +15,11 @@
     else
     {
         <h1 class="text-info text-center">DELETE PRODUCT</h1>
-
+        @if (ViewData["Message"] != null)
+        {
+            <p class="text-center text-danger">@ViewData["Message"]</p>
+        }
+        <hr/>
         <h3>Are you sure you want to delete this?</h3>
         <div>
             <hr />

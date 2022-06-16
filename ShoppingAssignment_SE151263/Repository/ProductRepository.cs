@@ -17,5 +17,7 @@ namespace ShoppingAssignment_SE151263.Repository
         public bool SubQuantity(int id, int quantity) => ProductDAO.Instance.SubQuantity(id, quantity);
 
         public Product GetProductByID(int id) => ProductDAO.Instance.GetProductByID(id);
+
+        public bool DeleteProduct(int id) => ProductDAO.Instance.DeleteProduct(id);
     }
 }

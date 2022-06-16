@@ -54,5 +54,20 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 throw new Exception("Error at DeleteOrder: " + ex.Message);
             }
         }
+
+        public List<OrderDetail> GetListByProductID(int productId)
+        {
+            List<OrderDetail> list = new List<OrderDetail>();
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                list = context.OrderDetails.Where(o => o.ProductId == productId).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error at GetListByProductID: " + ex.Message);
+            }
+            return list;
+        }
     }
 }

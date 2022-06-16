@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShoppingAssignment_SE151263.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -145,9 +146,12 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 var context = new NorthwindCopyDBContext();
                 Product pro = context.Products.SingleOrDefault(p => p.ProductId == id);
                 pro.QuantityPerUnit -= quantity;
-                if (pro.QuantityPerUnit >=0)
+                if (pro.QuantityPerUnit >= 0)
                 {
                     check = true;
+                    byte available = 1;
+                    byte notAvailable = 0;
+                    pro.ProductStatus = pro.QuantityPerUnit > 0 ? available : notAvailable;
                     context.SaveChanges();
                 }
             }
@@ -172,6 +176,33 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 throw new Exception("Error at SubQuantity:" + ex.Message);
             }
             return pro;
+        }
+
+        public bool DeleteProduct(int id)
+        {
+            bool check = false;
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                Product pro = new Product();
+                pro = GetProductByID(id);
+                if (pro != null)
+                {
+                    IOrderDetailRepository odRepo = new OrderDetailRepository();
+                    List<OrderDetail> odList = odRepo.GetListByProductID(id);
+                    if (odList.Count == 0)
+                    {
+                        context.Products.Remove(pro);
+                        context.SaveChanges();
+                        check = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error at DeleteProduct: " + ex.Message);
+            }
+            return check;
         }
 
     }

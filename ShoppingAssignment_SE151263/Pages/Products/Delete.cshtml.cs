@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ShoppingAssignment_SE151263.DataAccess;
+using ShoppingAssignment_SE151263.Repository;
 using System.Threading.Tasks;
 
 namespace ShoppingAssignment_SE151263.Pages.Products
@@ -9,10 +10,12 @@ namespace ShoppingAssignment_SE151263.Pages.Products
     public class DeleteModel : PageModel
     {
         private readonly NorthwindCopyDBContext _context;
+        private IProductRepository proRepo;
 
         public DeleteModel(NorthwindCopyDBContext context)
         {
             _context = context;
+            proRepo = new ProductRepository();
         }
 
         [BindProperty]
@@ -42,16 +45,22 @@ namespace ShoppingAssignment_SE151263.Pages.Products
             {
                 return NotFound();
             }
-
-            Product = await _context.Products.FindAsync(id);
-
-            if (Product != null)
+            else
             {
-                _context.Products.Remove(Product);
-                await _context.SaveChangesAsync();
+                if (proRepo.DeleteProduct(id.Value))
+                {
+                    System.Console.WriteLine("Delete PRODUCT thanh cong!");
+                    return RedirectToPage("./Index");
+                }
+                else
+                {
+                    ViewData["Message"] = "Xoá thất bại vì sản phẩm này đang có thông tin bên bảng order detail!";
+                    Product = await _context.Products
+                                        .Include(p => p.Category)
+                                        .Include(p => p.Supplier).FirstOrDefaultAsync(m => m.ProductId == id);
+                    return Page();
+                }
             }
-
-            return RedirectToPage("./Index");
         }
     }
 }

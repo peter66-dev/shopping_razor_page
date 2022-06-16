@@ -119,20 +119,13 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 if (cus != null)
                 {
                     IOrderRepository orRepo = new OrderRepository();
-                    IOrderDetailRepository odRepo = new OrderDetailRepository();
-                    List<Order> Orders = orRepo.GetOrdersByCustomerID(id);
-
-                    // deleting order details by orderID
-                    foreach (var ord in Orders)
+                    List<Order> orders = orRepo.GetOrdersByCustomerID(id);
+                    if (orders.Count == 0) // không có order thì delete
                     {
-                        odRepo.DeleteOrder(ord.OrderId);
+                        context.Customers.Remove(cus);
+                        context.SaveChanges();
+                        check = true;
                     }
-
-                    // deleting orders by customerID
-                    orRepo.DeleteOrder(id);
-
-                    context.Customers.Remove(cus);
-                    check = true;
                 }
             }
             catch (Exception ex)

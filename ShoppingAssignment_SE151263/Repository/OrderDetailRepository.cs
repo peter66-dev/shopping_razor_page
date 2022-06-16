@@ -9,5 +9,7 @@ namespace ShoppingAssignment_SE151263.Repository
         public bool CheckExist(string orderId, int productId) => OrderDetailDAO.Instance.CheckExist(orderId, productId);
 
         public void DeleteOrder(string orderId) => OrderDetailDAO.Instance.DeleteOrder(orderId);
+
+        public List<OrderDetail> GetListByProductID(int productId) => OrderDetailDAO.Instance.GetListByProductID(productId);
     }
 }
