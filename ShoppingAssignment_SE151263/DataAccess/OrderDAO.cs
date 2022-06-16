@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShoppingAssignment_SE151263.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -97,14 +98,38 @@ namespace ShoppingAssignment_SE151263.DataAccess
             return list;
         }
 
-        public void DeleteOrder(string customerID)
+        private Order GetOrderByID(string orderID)
+        {
+            Order ord = null;
+            try
+            {
+                var context = new NorthwindCopyDBContext();
+                ord = context.Orders.SingleOrDefault(o => o.OrderId.Trim().Equals(orderID.Trim()));
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error at GetOrdersByCustomerID: " + ex.Message);
+            }
+            return ord;
+        }
+
+
+
+        public void DeleteOrder(string orderID)
         {
             List<Order> list = new List<Order>();
             try
             {
                 var context = new NorthwindCopyDBContext();
-                list = context.Orders.Where(o => o.CustomerId.Trim().Equals(customerID.Trim())).ToList();
-                context.Orders.RemoveRange(list);
+
+                Order tmp = GetOrderByID(orderID);
+                IOrderDetailRepository odRepo = new OrderDetailRepository();
+
+
+                odRepo.DeleteOrder(orderID);
+                context.Remove(tmp);
+
+                context.SaveChanges();
             }
             catch (Exception ex)
             {

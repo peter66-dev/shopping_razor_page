@@ -48,6 +48,7 @@ namespace ShoppingAssignment_SE151263.DataAccess
                 var context = new NorthwindCopyDBContext();
                 List<OrderDetail> od = context.OrderDetails.Where(o => o.OrderId.Trim().Equals(orderId)).ToList();
                 context.OrderDetails.RemoveRange(od);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
